@@ -18,7 +18,19 @@ export class Emulator extends RetroAppWrapper {
     this.rotSideways = false;
 
     this.audioStarted = 0;
+    this.total = 0;
+    this.count = 0;
+
     this.audioCallback = (offset, length) => {
+      this.total += length;
+      this.count = this.count + 1;
+
+      if (this.count === 60) {
+        //console.log("total: " + this.total);
+        this.total = 0;
+        this.count = 0;
+      }
+
       length = length << 1;
       const audioArray = new Int16Array(window.Module.HEAP16.buffer, offset, length);
       this.audioProcessor.storeSoundCombinedInput(audioArray, 2, length, 0, 32768);
@@ -29,8 +41,8 @@ export class Emulator extends RetroAppWrapper {
     return new ScriptAudioProcessor(
       2,
       48000,
-      32768,
-      4096
+      8192 + 4096,
+      2048
     ).setDebug(this.debug);
   }
 
