@@ -197,6 +197,7 @@ export class EmulatorPauseScreen extends Component {
           <NesSettingsEditor
             emulator={emulator}
             onClose={closeCallback}
+            showOnScreenControls={true}
           />
         ) : null}
         {mode === ModeEnum.CHEATS ? (
